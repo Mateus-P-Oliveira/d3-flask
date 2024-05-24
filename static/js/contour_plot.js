@@ -17,8 +17,14 @@ function createContourPlot() {
             const Y = data.Y;
             const Z = data.Z;
 
-            console.log(X);
-            console.log(Y);
+            for (var i = 0; i < Z.length; i++) {
+                for (var j = 0; j < Z[i].length; j++) {
+                    if (Z[i][j] < -1000000) {
+                        Z[i][j] = null;
+                    }
+                }
+            }
+
             console.log(Z);
 
             // Log the data to check if it's retrieved correctly
