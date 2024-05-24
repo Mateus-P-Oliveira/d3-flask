@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Data Dashboard">
+    <meta name="author" content="Jan Nelson">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Data Vibe</title>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+
+<body>
+    <!-- work -->
+    <section class="work" id="work">
+        <div class="title">
+            <h1>Some of our finest work</h1>
+            <p>
+                Our analysis below centers around defected customers,
+                utilizing data retrieved from a CSV file. </br>
+                We delve into the dataset to extract meaningful insights
+                and gain a deeper understanding of customer attrition factors.</br>
+                The interactive charts represent frontend data visualization
+                using Flask and D3js utilizing data retrieved from a CSV file or any data source.
+            </p>
+        </div>
+        <div class="tit">
+            <p>
+                *Click on pie chart to view analyzed data
+            </p>
+        </div>
+        <div class="port">
+            <div class="item-data" id="contour-plot"></div>
+        </div>
+    </section>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/contour_plot.js') }}"></script>
+    <script>
+        // Call the function defined in the separate JavaScript file
+        createContourPlot();
+    </script>
+</body>
+
+</html>
