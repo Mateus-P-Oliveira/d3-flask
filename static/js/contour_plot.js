@@ -15,7 +15,12 @@ function createContourPlot() {
             // Data processing and visualization using D3.js
             const X = data.X;
             const Y = data.Y;
-            const Z = data.Z;
+            let Z = data.Z;
+            console.log('ZZ',Z);
+            //Z = handleNaNValues(Z);
+
+            Z = Z.map(row => row.map(value => value === -10000000 ? 0 : value)); //Transformo os valores de -100000 em 0
+            console.log('ZZZ',Z);
 
             for (var i = 0; i < Z.length; i++) {
                 for (var j = 0; j < Z[i].length; j++) {
@@ -25,7 +30,7 @@ function createContourPlot() {
                 }
             }
 
-            console.log(Z);
+           // console.log(Z);
 
             // Log the data to check if it's retrieved correctly
             console.log('X:', X);
