@@ -20,11 +20,12 @@ def get_data():
     data['y'] = -0.2*abs(data.Bx - data.Ax)
     X, Y, Z= to_grid((data.x,data.y), data.resistividade)
     Z = np.nan_to_num(Z, nan = -10000000)
-    return X, Y, Z.tolist()[::-1]
+    return X, Y.tolist(), Z.tolist()[::-1]
 
 def to_grid(points, Z):
     X1 = sorted(np.unique(points[0]))
-    Y1 = sorted(np.unique(points[1]))
+    # Y1 = sorted(np.unique(points[1]))
+    Y1 = np.linspace(min(points[1]), max(points[1]), 100)
     grid_x, grid_y = np.meshgrid(X1,Y1)
     return X1, Y1, griddata(points, Z, (grid_x,grid_y), method='linear')
 

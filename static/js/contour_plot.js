@@ -43,38 +43,38 @@ function createContourPlot() {
             const width = 800 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
-            const logZi = Z;
+            // const logZi = Z;
 
-            console.log("logZi:",logZi)
+            // console.log("logZi:",logZi)
 
-            const cleanedZValues = logZi.map(subArray => subArray.filter(value => !isNaN(value)));
+            // const cleanedZValues = logZi.map(subArray => subArray.filter(value => !isNaN(value)));
             
-            const maxValue = cleanedZValues.reduce((max,subArray)=>{
-                const subArrayMax = Math.max(...subArray);
-                    return Math.max(max,subArrayMax);
+            // const maxValue = cleanedZValues.reduce((max,subArray)=>{
+            //     const subArrayMax = Math.max(...subArray);
+            //         return Math.max(max,subArrayMax);
 
-            },-Infinity);
+            // },-Infinity);
 
-            console.log("maxValue",maxValue);
+            // console.log("maxValue",maxValue);
 
-            const logZ = logZi.map(linha=>linha.map(valor=>valor / maxValue));
+            // const logZ = logZi.map(linha=>linha.map(valor=>valor / maxValue));
 
-            for(let i =0;i <logZ.length;i++){
-                for(let j=0;j<logZ[i].length;j++){
-                    if(isNaN(logZ[i][j])){
-                        logZ[i][j] = null;
-                    }
-                }
-            }
+            // for(let i =0;i <logZ.length;i++){
+            //     for(let j=0;j<logZ[i].length;j++){
+            //         if(isNaN(logZ[i][j])){
+            //             logZ[i][j] = null;
+            //         }
+            //     }
+            // }
          
-            console.log("logZ:", logZ);
+            // console.log("logZ:", logZ);
 
             const ZFiltered = Z.flat().filter(value => value !== null);
 
-            const minlogZ = Math.min(...ZFiltered)
-            const maxlogZ = Math.max(...ZFiltered)
-            console.log("min:",minlogZ);
-            console.log("max:",maxlogZ);
+            const minn = Math.min(...ZFiltered)
+            const maxx = Math.max(...ZFiltered)
+            console.log("min:",minn);
+            console.log("max:",maxx);
 
             // Append SVG to the div
         
@@ -90,10 +90,14 @@ function createContourPlot() {
             const colorScale = d3.scaleSequential(d3.interpolateViridis)
                 .domain(d3.extent(ZFiltered));
 
+            const nice = d3.nice(Math.log2(minn), Math.log2(maxx), 11)
+            const thresholds = d3.ticks(nice[0], nice[1], 11).map(i => Math.pow(2, i))
+            
+            console.log("thresholds: ", thresholds)
             // Define the contour function
             const contours = d3.contours()
                 .size([X.length, Y.length])
-                .thresholds(d3.range(minlogZ,maxlogZ,50))
+                .thresholds(thresholds)
                 (Z.flat());
 
             const svg = d3.select("#contour-plot") //Talvez mudar aqui
@@ -135,12 +139,12 @@ function createContourPlot() {
                 .attr("transform", `translate(${width - margin.right + 10}, ${margin.top})`);
             
             const legendScale = d3.scaleLinear()
-                .domain(d3.extent(logZ.flat()))
+                .domain(d3.extent(ZFiltered))
                 .range([legendHeight,0]);
 
             const legendAxis = d3.axisRight(legendScale).ticks(6);
 
-            const legendData = d3.range(Math.min(...logZ.flat()), Math.max(...logZ.flat()), 0.1);
+            const legendData = d3.range(minn, maxx, 50);
 
             legendSvg.selectAll("rect")
             .data(legendData)
