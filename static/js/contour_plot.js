@@ -117,14 +117,16 @@ function createContourPlot() {
             console.log('Paths:', svg.selectAll("path").nodes());
            
             // Add x-axis
-            svg.append("g")
-                .attr("transform", `translate(0, ${height - margin.bottom}) `)
-                .call(d3.axisBottom(xScale));
+           // Add x-axis
+svg.append("g")
+.attr("transform", `translate(0, ${height-20})`) // Move o eixo X para a parte inferior do gráfico
+.call(d3.axisBottom(xScale));
 
-            // Add y-axis
-            svg.append("g")
-                .attr("transform",`translate(${width - margin.right + 10},${margin.top})`)
-                .call(d3.axisLeft(yScale));
+// Add y-axis
+svg.append("g")
+.call(d3.axisLeft(yScale))
+.attr("transform", `translate(${margin.right}, 0)`); // Move o eixo Y para a esquerda do gráfico
+
             const legendWidth = 20;
             const legendHeight = 200;
             
