@@ -62,7 +62,8 @@ function createContourPlot() {
             // }
          
             // console.log("logZ:", logZ);
-
+            const aspectRatio = width / height; // Proporção desejada (largura / altura)
+            const adjustedHeight = width / aspectRatio;
             const ZFiltered = Z.flat().filter(value => value !== null);
 
             const minn = Math.min(...ZFiltered)
@@ -103,6 +104,7 @@ function createContourPlot() {
             // Log the generated contours
             console.log('----------');
             console.log('Contours:', contours);
+           
 
             // Create paths for the contours
             svg.selectAll("path")
@@ -110,7 +112,8 @@ function createContourPlot() {
                 .enter().append("path")
                 .attr("d", d3.geoPath(d3.geoIdentity().scale(width / X.length)))
                 .attr("fill", d => colorScale(d.value))
-                .attr("stroke", "black");
+                .attr("stroke", "black")
+                .style('transform', 'scaleY(5)');
                 
 
             // Log the generated paths

@@ -24,8 +24,8 @@ def get_data():
 
 def to_grid(points, Z):
     X1 = sorted(np.unique(points[0]))
-    # Y1 = sorted(np.unique(points[1]))
-    Y1 = np.linspace(min(points[1]), max(points[1]), 100).tolist()
+    Y1 = sorted(np.unique(points[1]))
+    #Y1 = np.linspace(min(points[1]), max(points[1]), 100).tolist()
     grid_x, grid_y = np.meshgrid(X1,Y1)
     return X1, Y1, griddata(points, Z, (grid_x,grid_y), method='linear')
 
