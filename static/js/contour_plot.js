@@ -37,31 +37,6 @@ function createContourPlot() {
             const width = 800 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
-            // const logZi = Z;
-
-            // console.log("logZi:",logZi)
-
-            // const cleanedZValues = logZi.map(subArray => subArray.filter(value => !isNaN(value)));
-            
-            // const maxValue = cleanedZValues.reduce((max,subArray)=>{
-            //     const subArrayMax = Math.max(...subArray);
-            //         return Math.max(max,subArrayMax);
-
-            // },-Infinity);
-
-            // console.log("maxValue",maxValue);
-
-            // const logZ = logZi.map(linha=>linha.map(valor=>valor / maxValue));
-
-            // for(let i =0;i <logZ.length;i++){
-            //     for(let j=0;j<logZ[i].length;j++){
-            //         if(isNaN(logZ[i][j])){
-            //             logZ[i][j] = null;
-            //         }
-            //     }
-            // }
-         
-            // console.log("logZ:", logZ);
             const aspectRatio = width / height; // Proporção desejada (largura / altura)
             const adjustedHeight = width / aspectRatio;
             const ZFiltered = Z.flat().filter(value => value !== null);
@@ -83,9 +58,9 @@ function createContourPlot() {
                 .range([height - margin.bottom, margin.top]);
 
             const nice = d3.nice(Math.log2(minn), Math.log2(maxx), 11)
-            const thresholds = d3.ticks(nice[0], nice[1], 11).map(i => Math.pow(2, i))
+            const thresholds = d3.ticks(nice[0], nice[1], 12).map(i => Math.pow(2, i))
 
-            const colorScale = d3.scaleSequentialLog(d3.extent(thresholds), d3.interpolateViridis)
+            const colorScale = d3.scaleSequentialLog(d3.extent(thresholds), d3.interpolateRainbow)
             
             console.log("thresholds: ", thresholds)
             // Define the contour function
@@ -113,6 +88,7 @@ function createContourPlot() {
                 .attr("d", d3.geoPath(d3.geoIdentity().scale(width / X.length)))
                 .attr("fill", d => colorScale(d.value))
                 .attr("stroke", "black")
+                .attr("stroke-width", 0.2)
                 .style('transform', 'scaleY(5)');
                 
 
@@ -134,7 +110,7 @@ svg.append("g")
             const legendHeight = 200;
             
             const legendSvg = svg.append("g")
-                .attr("transform", `translate(${width - margin.right + 10}, ${margin.top})`);
+                .attr("transform", `translate(${width - margin.right - 15}, ${margin.top})`);
             
             const legendScale = d3.scaleLinear()
                 .domain(d3.extent(ZFiltered))
