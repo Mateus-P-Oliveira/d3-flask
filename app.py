@@ -3,8 +3,12 @@ from flask import Flask, render_template, jsonify
 from scipy.interpolate import griddata
 import numpy as np
 import pandas as pd
+from support_2 import MyPlots
+from view_home import Home
 
 app = Flask(__name__)
+
+home = Home(app)
 
 # Function to generate sample contour data
 def generate_contour_data():
@@ -29,23 +33,32 @@ def to_grid(points, Z):
     grid_x, grid_y = np.meshgrid(X1,Y1)
     return X1, Y1, griddata(points, Z, (grid_x,grid_y), method='linear')
 
+
+myplots = MyPlots()
+myplots.load_files("static\data\L3.csv")
+home.set_data(myplots)
+#home.draw()
+
 # Route to serve HTML page
 @app.route('/')
 def index():
     return render_template('index.html')
 
 # API endpoint to serve contour data
-@app.route('/contour-data')
-def contour_data():
-    # X, Y, Z = generate_contour_data()
-    X, Y, Z = get_data()
-    return jsonify({'X': X, 'Y': Y, 'Z': Z})
+@app.route('/')
+def index():
+    graph = build_graph()
+    return render_template('index.html', graph=graph)
+# def contour_data():
+#     # X, Y, Z = generate_contour_data()
+#     X, Y, Z = get_data()
+#     return jsonify({'X': X, 'Y': Y, 'Z': Z})
 
-# API endpoint to serve contour data
-@app.route('/example-data')
-def example_data():
-    X, Y, Z = generate_contour_data()
-    return jsonify({'X': X, 'Y': Y, 'Z': Z})
+# # API endpoint to serve contour data
+# @app.route('/example-data')
+# def example_data():
+#     X, Y, Z = generate_contour_data()
+#     return jsonify({'X': X, 'Y': Y, 'Z': Z})
 
 if __name__ == '__main__':
     app.run(debug=True)
