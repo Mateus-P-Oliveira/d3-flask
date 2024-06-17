@@ -19,7 +19,7 @@ def generate_contour_data():
     return X.tolist(), Y.tolist(), Z.tolist()
 
 def get_data():
-    data = pd.read_csv("static\data\L3.csv", sep=';')
+    data = pd.read_csv("static\\data\\L3.csv", sep=';')
     data['x'] = (data.Ax + data.Bx)/2
     data['y'] = -0.2*abs(data.Bx - data.Ax)
     X, Y, Z= to_grid((data.x,data.y), data.resistividade)
@@ -40,14 +40,16 @@ home.set_data(myplots)
 #home.draw()
 
 # Route to serve HTML page
-@app.route('/')
-def index():
-    return render_template('index.html')
+
+# @app.route('/')
+# def index():
+#     return render_template('index.html')
 
 # API endpoint to serve contour data
 @app.route('/')
 def index():
-    graph = build_graph()
+    graph = myplots.return_contour(myplots.data1, cont=myplots.contours, log=True, title='teste')
+       
     return render_template('index.html', graph=graph)
 # def contour_data():
 #     # X, Y, Z = generate_contour_data()
